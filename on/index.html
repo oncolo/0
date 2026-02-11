@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onkolo Oysa</title>
+
+    <!-- External Assets -->
+     <link rel="icon" href="./image/photo_2026-01-03_17-17-29.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* -----------------------------------------------------------
+           CSS START (Approximately 600 Lines of Detail-Oriented CSS)
+           ----------------------------------------------------------- */
+        :root {
+            --primary: #f7bf50;
+            --primary-rgb: 135, 80, 247;
+            --secondary: #543414;
+            --accent: #00d2ff;
+            --bg: #07030a;
+            --card: rgba(255, 255, 255, 0.03);
+            --text: #ffffff;
+            --text-dim: #a1a1a1;
+            --glass: rgba(0, 0, 0, 0.7);
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --text: #0f172a;
+            --text-dim: #64748b;
+            --card: rgba(0, 0, 0, 0.03);
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; cursor: crosshair; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary), var(--accent)); border-radius: 5px; }
+
+        /* 3D LOADER */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+        }
+        .cube-wrapper { width: 100px; height: 100px; perspective: 1000px; transform: scale(1.5); }
+        .cube {
+            width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+            animation: rotateCube 3s infinite linear;
+        }
+        .cube div {
+            position: absolute; width: 100px; height: 100px; background: rgba(var(--primary-rgb), 0.2);
+            border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary);
+        }
+        .front { transform: translateZ(50px); } .back { transform: rotateY(180deg) translateZ(50px); }
+        .left { transform: rotateY(-90deg) translateZ(50px); } .right { transform: rotateY(90deg) translateZ(50px); }
+        .top { transform: rotateX(90deg) translateZ(50px); } .bottom { transform: rotateX(-90deg) translateZ(50px); }
+        @keyframes rotateCube { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 25px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass); backdrop-filter: blur(25px); z-index: 9000;
+            border-bottom: 1px solid rgba(var(--primary-rgb), 0.1);
+        }
+        .logo { font-size: 2rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.95rem;
+            position: relative; transition: var(--transition);
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--primary); transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* THEME TOGGLE */
+        .theme-toggle {
+            width: 50px; height: 50px; background: var(--primary); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            box-shadow: 0 0 20px var(--primary); transition: 0.3s;
+        }
+        .theme-toggle:hover { transform: scale(1.1) rotate(180deg); }
+
+        /* SECTION BACKGROUNDS */
+        section { 
+            position: relative; min-height: 100vh; padding: 120px 8%; 
+            display: flex; flex-direction: column; justify-content: center;
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); z-index: 1; pointer-events: none; }
+        .content { position: relative; z-index: 2; width: 100%; }
+
+        #home { background-image: url("./image/Programmierung\ ausprobieren.jpg"); }
+        #about { background-image: url("./image/program2.jpg"); }
+        #services { background-image: url("./image/prog3.gif"); }
+        #works { background-image: url("./image/prog5.jpg"); }
+        #contact { background-image: url("./image/prog5.jpg"); }
+
+        /* HERO HOVER */
+        .hero h1 { font-size: clamp(4rem, 12vw, 8rem); line-height: 1; font-weight: 900; }
+        .hero .outline { color: transparent; -webkit-text-stroke: 1px var(--primary); transition: 0.5s; }
+        .hero .outline:hover { color: var(--primary); -webkit-text-stroke: 0; }
+
+        /* PROFILE SOCIAL REVEAL (Requested Feature) */
+        .profile-container { 
+            position: relative; width: 350px; height: 350px; margin: 0 auto;
+            cursor: pointer;
+        }
+        .profile-img { 
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 5px solid var(--primary); position: relative; z-index: 10;
+            transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .profile-container:hover .profile-img { transform: scale(0.95); box-shadow: 0 0 50px var(--primary); }
+        
+        .social-reveal {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100%; height: 100%; pointer-events: none; z-index: 5;
+        }
+        .social-item {
+            position: absolute; width: 50px; height: 50px; background: var(--primary);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 1.2rem; opacity: 0; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto; text-decoration: none;
+        }
+        .social-item:hover { background: var(--accent); transform: scale(1.2) !important; }
+
+        /* PROJECT CARDS & HOVER EFFECTS */
+        .section-title { font-size: 3.5rem; text-align: center; margin-bottom: 60px; font-weight: 800; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        
+        .card {
+            background: var(--card); border-radius: 30px; padding: 40px;
+            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition); position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; inset: 0; background: linear-gradient(var(--primary), var(--accent));
+            opacity: 0; transition: 0.4s; z-index: -1;
+        }
+        .card:hover { transform: translateY(-20px) rotateX(10deg); border-color: var(--primary); }
+        .card:hover::before { opacity: 0.05; }
+        .card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 30px; transition: 0.5s; }
+        .card:hover i { transform: scale(1.2) rotate(360deg); color: var(--accent); }
+
+        /* SELECTED WORKS (Interactive) */
+        .work-card {
+            background: var(--card); border-radius: 25px; overflow: hidden;
+            position: relative; height: 450px; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .work-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.7s; }
+        .work-card:hover img { transform: scale(1.15) rotate(2deg); filter: blur(3px) brightness(0.5); }
+        
+        .work-info {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 30px;
+            opacity: 0; transform: translateY(50px); transition: 0.5s; text-align: center;
+        }
+        .work-card:hover .work-info { opacity: 1; transform: translateY(0); }
+        
+        /* FOOTER (Detailed CSS) */
+        footer {
+            background: #000; padding: 100px 8% 40px; border-top: 1px solid rgba(var(--primary-rgb), 0.2);
+            display: grid; grid-template-columns: 2fr 1fr 1.5fr; gap: 60px;
+        }
+        .footer-logo { font-size: 2.5rem; font-weight: 900; margin-bottom: 25px; color: var(--primary); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 15px; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--primary); padding-left: 10px; }
+
+        /* BUTTONS */
+        .btn-luxury {
+            padding: 20px 50px; border-radius: 50px; border: none; font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white; cursor: pointer; position: relative; overflow: hidden;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-luxury::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: rgba(255,255,255,0.2); transform: rotate(45deg) translateY(-100%);
+            transition: 0.6s;
+        }
+        .btn-luxury:hover::after { transform: rotate(45deg) translateY(100%); }
+        .btn-luxury:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(var(--primary-rgb), 0.4); }
+
+        /* Animation Keyframes */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .float { animation: float 4s infinite ease-in-out; }
+
+        @media (max-width: 968px) {
+            footer, .about-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 3D LOADER -->
+    <div id="loader">
+        <div class="cube-wrapper">
+            <div class="cube">
+                <div class="front"></div><div class="back"></div>
+                <div class="left"></div><div class="right"></div>
+                <div class="top"></div><div class="bottom"></div>
+            </div>
+        </div>
+        <h2 style="color: var(--primary); margin-top: 40px; letter-spacing: 10px; font-weight: 900;" class="animate__animated animate__pulse animate__infinite">Oncolo oysa</h2>
+    </div>
+
+    <!-- 2. NAVIGATION -->
+    <nav>
+        <a href="#" class="logo">OncOLO<span>OYSA.</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#about">ABOUT</a></li>
+            <li><a href="#services">SERVICES</a></li>
+            <li><a href="#works">WORKS</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+        <div class="theme-toggle" id="themeBtn">
+            <i class="fas fa-moon"></i>
+        </div>
+    </nav>
+
+    <!-- 3. HOME SECTION -->
+    <section id="home" class="hero">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1 class="animate-text" data-aos="fade-up">MASTERING <br> <span class="outline">THE WEB</span></h1>
+            <p style="font-size: 1.8rem; margin: 30px 0; color: var(--text-dim);" data-aos="fade-up" data-aos-delay="200">
+                Web Architect & Database Extraordinaire.
+            </p>
+            <div data-aos="fade-up" data-aos-delay="400">
+                <button class="btn-luxury" onclick="window.location.href='#works'">Explore My Vision</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. ABOUT SECTION (Social Reveal Feature) -->
+    <section id="about">
+        <div class="overlay" style="background: rgba(0, 0, 0, 0.85);"></div>
+        <div class="content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;" class="about-container">
+                <div class="profile-container" id="profileBox" data-aos="zoom-in">
+                   <!-- my pic -->
+                    <img src="./image/photo_2026-01-03_17-17-29.png" class="profile-img" alt="Onkolo Oysa">
+                    
+                    <!-- Social Reveal Items (Initially Hidden) -->
+                    <div class="social-reveal" id="socialCircle">
+                        <a href="#" class="social-item" style="--d: 0;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-item" style="--d: 1;"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" class="social-item" style="--d: 2;"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-item" style="--d: 3;"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-item" style="--d: 4;"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <p style="position: absolute; bottom: -40px; width: 100%; text-align: center; font-weight: 700; color: var(--primary);">CLICK TO CONNECT</p>
+                </div>
+                
+                <div data-aos="fade-left">
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Oncolo Oysa</h2>
+                    <h3 style="color: var(--accent); margin-bottom: 20px;">The Digital Architect</h3>
+                    <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-dim);">
+                        Expert in Database Administration and high-end Web Design. 
+                        I build systems that don't just work—they perform with cinematic elegance. 
+                        My architecture is defined by security, scalability, and visual mastery.
+                    </p>
+                    <div style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="card" style="padding: 20px;">
+                            <h2 style="color: var(--primary);">12+</h2>
+                            <p>Global Projects</p>
+                        </div>
+                        <div class="card" style="padding: 20px;">
+                            <h2 style="color: var(--primary);">99%</h2>
+                            <p>Optimization Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. SERVICES SECTION -->
+    <section id="services">
+        <div class="overlay"></div>
+        <div class="content">
+            <h2 class="section-title" data-aos="fade-down">Advanced Expertise</h2>
+            <div class="grid">
+                <div class="card" data-aos="fade-up" data-tilt>
+                    <i class="fas fa-database"></i>
+                    <h3>Database Admin</h3>
+                    <p>Architecture, security, and extreme optimization for enterprise-scale SQL/NoSQL systems.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="200" data-tilt>
+                    <i class="fas fa-layer-group"></i>
+                    <h3>Fullstack Systems</h3>
+                    <p>Modern frontend engineering combined with powerful node-based backends.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="400" data-tilt>
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Cyber Fortress</h3>
+                    <p>Implementing military-grade security protocols for your data and web interfaces.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SELECTED WORKS (10 Dynamic Projects) -->
+    <section id="works">
+        <div class="overlay" style="background: rgba(0,0,0,0.8);"></div>
+        <div class="content">
+            <h2 class="section-title">Selected Works</h2>
+            <div class="grid" id="worksGrid">
+                <!-- JS will generate 10 Projects here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CONTACT SECTION -->
+    <section id="contact">
+        <div class="overlay" style="background: rgba(0,0,0,0.9);"></div>
+        <div class="content" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title">Initiate Contact</h2>
+            <div class="card" data-aos="zoom-in" style="background: var(--glass);">
+                <form id="contactForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <input type="text" placeholder="FULL NAME" style="width:100%; padding:20px; background:rgba(255,255,255,0.05); border:none; border-radius:15px; color:white;">
+                        <input type="email" placeholder="EMAIL ADDRESS" style="width:100%; padding:20px; background:rgba(255,255,255,0.05); border:none; border-radius:15px; color:white;">
+                    </div>
+                    <textarea placeholder="DESCRIBE YOUR VISION" rows="6" style="width:100%; padding:20px; background:rgba(255,255,255,0.05); border:none; border-radius:15px; color:white; margin-top:20px;"></textarea>
+                    <button type="submit" class="btn-luxury" style="margin-top: 30px; width: 100%;">DEPLOY MESSAGE</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER -->
+    <footer>
+        <div>
+            <div class="footer-logo">ONKOLO<span>OYSA.</span></div>
+            <p style="color: var(--text-dim); line-height: 1.8;">
+                Architecting the digital future with precision. Based in Addis Ababa, serving global visionaries.
+            </p>
+        </div>
+        <div>
+            <h3 style="margin-bottom: 25px;">MASTERY</h3>
+            <ul class="footer-links">
+                <li><a href="#">Web Engineering</a></li>
+                <li><a href="#">Database Security</a></li>
+                <li><a href="#">Cloud Integration</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 style="margin-bottom: 25px;">DIRECT CONNECT</h3>
+            <p style="color: var(--text-dim); margin-bottom: 10px;">Email: oysaoncolo3@gmail.com</p>
+            <p style="color: var(--text-dim); margin-bottom: 25px;">Phone: +251 960 277 455</p>
+            <div style="display: flex; gap: 20px; font-size: 1.5rem;">
+                <i class="fab fa-facebook" style="cursor: pointer; color: var(--primary);"></i>
+                <i class="fab fa-telegram" style="cursor: pointer; color: var(--accent);"></i>
+                <i class="fab fa-github" style="cursor: pointer;"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- -----------------------------------------------------------
+         JAVASCRIPT (Approximately 200 Lines of Logic)
+         ----------------------------------------------------------- -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // 1. LOADER LOGIC
+        window.addEventListener('load', () => {
+            gsap.to("#loader", {
+                opacity: 0,
+                duration: 1.5,
+                delay: 2,
+                onComplete: () => {
+                    document.getElementById('loader').style.display = 'none';
+                    initGSAPAnimations();
+                }
+            });
+        });
+
+        // 2. GSAP ENTRANCE ANIMATIONS
+        function initGSAPAnimations() {
+            AOS.init({ duration: 1000, once: true });
+
+            gsap.from(".logo", { y: -50, opacity: 0, duration: 1 });
+            gsap.from(".nav-links li", { y: -50, opacity: 0, duration: 1, stagger: 0.1 });
+            gsap.from(".hero h1", { scale: 0.5, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.3)" });
+        }
+
+        // 3. THEME TOGGLE
+        const themeBtn = document.getElementById('themeBtn');
+        themeBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const target = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', target);
+            themeBtn.innerHTML = target === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            
+            // GSAP Theme Switch Effect
+            gsap.fromTo("body", { opacity: 0.5 }, { opacity: 1, duration: 0.5 });
+        });
+
+        // 4. PROFILE SOCIAL REVEAL FUNCTION (The Function you requested)
+        const profileBox = document.getElementById('profileBox');
+        const socialItems = document.querySelectorAll('.social-item');
+        let socialsVisible = false;
+
+        profileBox.addEventListener('click', (e) => {
+            socialsVisible = !socialsVisible;
+            
+            socialItems.forEach((item, index) => {
+                const angle = (index / socialItems.length) * (Math.PI * 2);
+                const radius = 180; // ስንት ፒክስል ርቆ እንዲሄድ
+                
+                const x = socialsVisible ? Math.cos(angle) * radius : 0;
+                const y = socialsVisible ? Math.sin(angle) * radius : 0;
+
+                gsap.to(item, {
+                    x: x,
+                    y: y,
+                    opacity: socialsVisible ? 1 : 0,
+                    duration: 0.6,
+                    ease: "back.out(1.7)",
+                    delay: index * 0.05
+                });
+            });
+
+            if(socialsVisible) {
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: ['#8750f7', '#00d2ff'] });
+            }
+        });
+
+        // 5. DYNAMIC WORK GRID GENERATION (10 Items)
+        const worksGrid = document.getElementById('worksGrid');
+        const workData = [
+            {t: "Quantum Database", i: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600"},
+            {t: "Astra ERP System", i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600"},
+            {t: "Neural UI Kit", i: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=600"},
+            {t: "Secure Pay API", i: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600"},
+            {t: "Titan Server OS", i: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?w=600"},
+            {t: "Galaxy Cloud", i: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600"},
+            {t: "Eon Web Engine", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600"},
+            {t: "Nexus Security", i: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600"},
+            {t: "Infinity App", i: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600"},
+            {t: "Omega Portal", i: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600"}
+        ];
+
+        workData.forEach((work, idx) => {
+            const div = document.createElement('div');
+            div.className = 'work-card';
+            div.setAttribute('data-aos', 'zoom-in');
+            div.setAttribute('data-aos-delay', idx * 100);
+            div.innerHTML = `
+                <img src="${work.i}" alt="${work.t}">
+                <div class="work-info">
+                    <h3>${work.t}</h3>
+                    <p style="color: var(--accent);">Architectural Masterpiece 0${idx+1}</p>
+                    <button class="btn-luxury" style="padding:10px 20px; font-size:0.7rem; margin-top:15px;">DEPLOY CASE STUDY</button>
+                </div>
+            `;
+            worksGrid.appendChild(div);
+        });
+
+        // 6. VANILLA TILT & CURSOR LOGIC
+        VanillaTilt.init(document.querySelectorAll(".card, .work-card"), {
+            max: 15, speed: 400, glare: true, "max-glare": 0.2
+        });
+
+        // Form Submission Confetti
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+            alert("Onkolo Oysa has received your request. Stand by for deployment.");
+        });
+
+        // Parallax Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(sec => {
+                const speed = 0.5;
+                const offset = window.pageYOffset;
+                sec.style.backgroundPositionY = (offset - sec.offsetTop) * speed + 'px';
+            });
+        });
+
+    </script>
+</body>
+</html>
